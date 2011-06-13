@@ -31,14 +31,8 @@
 <inputType id="cdt.managedbuild.tool.gnu.c.compiler.input.661517631" superClass="cdt.managedbuild.tool.gnu.c.compiler.input"/>
 </tool>
 <tool id="cdt.managedbuild.tool.gnu.c.linker.exe.debug.86739198" name="GCC C Linker" superClass="cdt.managedbuild.tool.gnu.c.linker.exe.debug">
-<option id="gnu.c.link.option.libs.1348730069" name="Libraries (-l)" superClass="gnu.c.link.option.libs" valueType="libs">
-<listOptionValue builtIn="false" value="generic_dbg"/>
-<listOptionValue builtIn="false" value="rt"/>
-<listOptionValue builtIn="false" value="pthread"/>
-</option>
-<option id="gnu.c.link.option.paths.1332505705" name="Library search path (-L)" superClass="gnu.c.link.option.paths" valueType="libPaths">
-<listOptionValue builtIn="false" value="&quot;${workspace_loc:/CFigDex}&quot;"/>
-</option>
+<option id="gnu.c.link.option.libs.1348730069" name="Libraries (-l)" superClass="gnu.c.link.option.libs" valueType="libs"/>
+<option id="gnu.c.link.option.paths.1332505705" name="Library search path (-L)" superClass="gnu.c.link.option.paths" valueType="libPaths"/>
 <inputType id="cdt.managedbuild.tool.gnu.c.linker.input.999720339" superClass="cdt.managedbuild.tool.gnu.c.linker.input">
 <additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
 <additionalInput kind="additionalinput" paths="$(LIBS)"/>
@@ -334,14 +328,8 @@
 <inputType id="cdt.managedbuild.tool.gnu.c.compiler.input.573324552" superClass="cdt.managedbuild.tool.gnu.c.compiler.input"/>
 </tool>
 <tool id="cdt.managedbuild.tool.gnu.c.linker.exe.release.1641454093" name="GCC C Linker" superClass="cdt.managedbuild.tool.gnu.c.linker.exe.release">
-<option id="gnu.c.link.option.libs.585320613" superClass="gnu.c.link.option.libs" valueType="libs">
-<listOptionValue builtIn="false" value="generic"/>
-<listOptionValue builtIn="false" value="pthread"/>
-<listOptionValue builtIn="false" value="rt"/>
-</option>
-<option id="gnu.c.link.option.paths.475018285" superClass="gnu.c.link.option.paths" valueType="libPaths">
-<listOptionValue builtIn="false" value="&quot;${workspace_loc:/CFigDex}&quot;"/>
-</option>
+<option id="gnu.c.link.option.libs.585320613" name="Libraries (-l)" superClass="gnu.c.link.option.libs" valueType="libs"/>
+<option id="gnu.c.link.option.paths.475018285" name="Library search path (-L)" superClass="gnu.c.link.option.paths" valueType="libPaths"/>
 <inputType id="cdt.managedbuild.tool.gnu.c.linker.input.74342073" superClass="cdt.managedbuild.tool.gnu.c.linker.input">
 <additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
 <additionalInput kind="additionalinput" paths="$(LIBS)"/>

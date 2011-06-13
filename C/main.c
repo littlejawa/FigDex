@@ -1,5 +1,4 @@
 #include <stdlib.h>
-#include "generic.h"
 
 unsigned int createList(unsigned int nbPoints) ;
 

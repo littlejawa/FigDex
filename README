@@ -1,3 +1,19 @@
 
  FigDex is a coding exercise to solve a combinatory problem.
 
+Roadmap:
+- GUI 2.0 - version permettant d'afficher les résultats du code de calcul 2.0
+  Le code existe déjà, mais n'est plus compatible avec la 2.0.
+  Le Plan(tm) est de reprendre le code existant, et de le modifier pour que l'interaction avec le code existant (calcul.c) soit minime. Idéalement, on passera à createList() un handle sur un fichier ouvert. Ce handle sera utilisé par la fonction pour écrire les résultat comme elle le fait déjà.
+  => la version ligne de commande (main.c) passera simplement "stdout" en paramètre, ce qui ne changera rien à son comportement
+  => la version GUI passera un handle ouvert par elle (peut-être un pipe ?), dans lequel elle récupérera les informations trouvées par le code de calcul, et les affichera comme bon lui semble
+
+  Cette séparation a pour but de simplifier le travail (pas d'accès du GUI aux structures internes du code de calcul). Il permettra aussi de rendre le GUI plus indépendant aux changements du code de calcul.
+
+- pyFigDex 1.0 - calcul en ligne de commande
+  une version de calcul, juste pour vérifier les perfs.
+  => si les perfs sont trop mauvaises, on envisagera de compiler la version C sous forme de librairie, et d'appeler celle-ci depuis le code Python GUI.
+
+- pyFigDex 2.0 - GUI
+  une version graphique, pour apprendre les API correspondantes.
+
