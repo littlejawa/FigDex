@@ -1,11 +1,14 @@
-#ifdef WIN32
-#include <windows.h>
-#endif
+//#ifdef WIN32
+//#include <windows.h>
+//#endif
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
 #include <string.h>
 
 #include "calcul.h"
+
+volatile char stop = 0 ;
 
 struct _node
 {
@@ -13,7 +16,7 @@ struct _node
 	struct _node **children ;
 } resultTree ;
 
-int initTree(struct _node *tree, unsigned int nbPoints)
+static int initTree(struct _node *tree, unsigned int nbPoints)
 {
 	tree->children = (struct _node **)malloc(nbPoints * sizeof(struct _node *)) ;
 	if (tree->children == NULL)
@@ -22,6 +25,30 @@ int initTree(struct _node *tree, unsigned int nbPoints)
 	tree->size = nbPoints ;
 	return 0 ;
 }
+
+int initCalcul(unsigned int nbPoints)
+{
+	return initTree(&resultTree, nbPoints) ;
+}
+
+//static void freeTree(struct _node *tree, unsigned int nbPoints)
+//{
+//	unsigned int i ;
+//	for (i = 0 ; i < nbPoints ; i++)
+//	{
+//		if (tree->children[i])
+//		{
+//			freeTree(tree->children[i], nbPoints) ;
+//
+//		}
+//	}
+//	free(tree) ;
+//}
+//
+//void freeCalcul(unsigned int nbPoints)
+//{
+//	freeTree(&resultTree, nbPoints) ;
+//}
 
 /*
 	fact()
@@ -103,29 +130,23 @@ void symetrie(unsigned int *fig, unsigned int nbPoints)
 /*
 	displayFunc()
 
-	Fonction utilisée pour l'affichage. Format compatible avec qlist_exec()
-	pour permettre un affichage rapide de l'ensemble des figures de la liste.
+	Fonction utilisée pour l'affichage.
+	Affiche les combinaisons de points sur la sortie standard.
 
 	Parametres :
-		 elem [IN]		- pointeur sur structure t_fig
-		 unused [//]	- non utilisé
-
-	Retour :
-		toujours 0 (pour continuer le traitement)
+		fig [IN]		- pointeur sur structure t_fig à afficher
 */
-int displayFunc(void *elem, void *unused)
+void displayFunc(t_fig  *fig)
 {
 	static int i = 1 ;
 	unsigned int j ;
-	t_fig *fig = (t_fig *)elem ;
 
-
-	printf("%04d - ", i++) ;
+	printf("%d - ", i++) ;
 	for (j = 0 ; j < fig->nbPoints ; j++)
-		printf("%d", fig->order[j]) ;
-
+	{
+		printf("%d ", fig->order[j]) ;
+	}
 	printf("\n") ;
-	return 0 ;
 }
 
 
@@ -146,7 +167,7 @@ int displayFunc(void *elem, void *unused)
 		0 si les figures sont similaires
 		!= 0 sinon
 */
-int compareFigures(struct _node *tree, unsigned int *schema, int nbPoints)
+int compareFigures(struct _node *tree, unsigned int *schema, unsigned int nbPoints)
 {
 	unsigned int i ;
 
@@ -223,7 +244,7 @@ void roll(t_fig *fig, unsigned int val, unsigned int *res)
 		0 si la figure est présente dans la liste
 		-1 sinon
 */
-int compareEquivalent(t_fig *challenger, int nbPoints)
+int compareEquivalent(t_fig *challenger, unsigned int nbPoints)
 {
 	unsigned int j ;
 	unsigned int rotation[128] ;
@@ -288,20 +309,29 @@ int add(struct _node *tree, unsigned int *schema, unsigned int nbPoints)
 	return add(tree->children[forward], schema + 1, nbPoints-1) ;
 }
 
-void createList(void *param)
+void loadList (int fd, unsigned int nbPoints)
+{
+	t_fig rBuf ;
+
+	rBuf.nbPoints = nbPoints ;
+	while(read(fd, rBuf.order, nbPoints * sizeof(unsigned int))
+			== nbPoints * sizeof(unsigned int))
+	{
+		add(&resultTree, rBuf.order, nbPoints) ;
+		displayFunc(&rBuf) ;
+	}
+}
+
+void createList(unsigned int nbPoints, int outStream)
 {
 	unsigned int i, j ;
 	t_fig precedante ;
 	t_fig courrante ;
-	unsigned int nbPoints = *(unsigned int *)param ;
-
-	if (initTree(&resultTree, nbPoints) != 0)
-		return ;
 
 	courrante.order[0] = 1 ;
 	courrante.nbPoints = nbPoints ;
 
-	for (i = 0 ; i < fact(nbPoints - 1) ; i++)
+	for (i = 0 ; i < fact(nbPoints - 1) && !stop ; i++)
 	{
 	    //construitune
 		for (j = 1 ; j < nbPoints ; j++)
@@ -343,11 +373,16 @@ void createList(void *param)
 		if (compareEquivalent(&courrante, nbPoints) != 0)
 		{
 			// element was not found ! add it to the list
-			if (add(&resultTree, &courrante.order, nbPoints) != 0)
+                        if (add(&resultTree, courrante.order, nbPoints) != 0)
 			{
 				// ERROR !
 			}
-			displayFunc(&courrante, NULL) ;
+			displayFunc(&courrante) ;
+			if (write(outStream, courrante.order, sizeof(unsigned int) * nbPoints)
+				!= sizeof(unsigned int) * nbPoints)
+			{
+				printf("ERROR: writing in temp file\n") ;
+			}
 		}
 	}
 

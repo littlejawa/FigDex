@@ -11,14 +11,12 @@ typedef struct
 	unsigned int nbPoints ;
 } t_fig ;
 
-void createList(void *param) ;
+int initCalcul(unsigned int nbPoints) ;
+//void freeCalcul(unsigned int nbPoints) ;
 
-int initCalcul(void) ;
-void freeCalcul(void) ;
+void loadList(int fd, unsigned int nbPoints) ;
+void createList(unsigned int nbPoints, int outStream) ;
 
-int waitNewFigs(void) ;
-void lockList(void) ;
-void unlockList(void) ;
 
 #if defined (__cplusplus)
 }
