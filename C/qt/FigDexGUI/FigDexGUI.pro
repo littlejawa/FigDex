@@ -11,8 +11,10 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        displaywindow.cpp
+        displaywindow.cpp \
+    ../../calcul.c
 
-HEADERS  += displaywindow.h
+HEADERS  += displaywindow.h \
+    ../../calcul.h
 
 FORMS    += displaywindow.ui

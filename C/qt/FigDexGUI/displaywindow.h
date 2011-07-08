@@ -15,6 +15,11 @@ public:
     explicit DisplayWindow(QWidget *parent = 0);
     ~DisplayWindow();
 
+private slots:
+    void on_btnStart_clicked();
+
+    void on_lstResults_itemSelectionChanged();
+
 private:
     Ui::DisplayWindow *ui;
 };
