@@ -20,6 +20,9 @@ private slots:
 
     void on_lstResults_itemSelectionChanged();
 
+    void paintEvent(QPaintEvent *pEv) ;
+
+
 private:
     Ui::DisplayWindow *ui;
 };
