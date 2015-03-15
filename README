@@ -1,5 +1,15 @@
 
  FigDex is a coding exercise to solve a combinatory problem.
+ 
+How to build:
+- CFigDex - outil en ligne de commande.
+  Depuis le répertoire C:
+    gcc main.c calcul.c -o [fichier sortie]
+  
+- FigDexGUI - interface graphique
+  Depuis le répertoire qt:
+    qmake
+    make
 
 Roadmap:
 - GUI 2.0 - version permettant d'afficher les résultats du code de calcul 2.0
