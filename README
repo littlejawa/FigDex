@@ -11,8 +11,6 @@ Roadmap:
   Cette séparation a pour but de simplifier le travail (pas d'accès du GUI aux structures internes du code de calcul). Il permettra aussi de rendre le GUI plus indépendant aux changements du code de calcul.
 
 - pyFigDex 1.0 - calcul en ligne de commande
-  une version de calcul, juste pour vérifier les perfs.
-  => si les perfs sont trop mauvaises, on envisagera de compiler la version C sous forme de librairie, et d'appeler celle-ci depuis le code Python GUI.
 
 - pyFigDex 2.0 - GUI
   une version graphique, pour apprendre les API correspondantes.
