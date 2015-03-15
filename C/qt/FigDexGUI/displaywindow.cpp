@@ -3,6 +3,9 @@
 #include <math.h>
 
 #include <QPainter>
+#include <QFile>
+
+#include <unistd.h>
 
 #include "displaywindow.h"
 #include "ui_displaywindow.h"
@@ -33,7 +36,7 @@ void DisplayWindow::on_btnStart_clicked()
 
     ui->lstResults->clear();
 
-    nbPoints = atoi(ui->boxNb->text().toAscii()) ;
+    nbPoints = ui->boxNb->text().toInt() ;
     printf("Doing job with %u points\n", nbPoints) ;
 
     ret = initCalcul(nbPoints) ;
@@ -90,7 +93,7 @@ void DisplayWindow::on_btnStart_clicked()
                 tmpStr.sprintf("%u ", tmpBuf[i]) ;
                 resultString += tmpStr ;
             }
-            printf("Adding elemenet %s\n", resultString.toAscii().data()) ;
+            printf("Adding element %s\n", resultString.toUtf8().constData()) ;
             ui->lstResults->addItem(resultString) ;
         }
     }
@@ -108,7 +111,7 @@ void DisplayWindow::paintEvent(QPaintEvent *pEv)
     QRect lstRect = ui->lstResults->rect() ;
     QRect wndRect = this->rect() ;
 
-    unsigned int nbPoints = atoi(ui->boxNb->text().toAscii()) ;
+    unsigned int nbPoints = ui->boxNb->text().toInt() ;
 
     // définition de notre zone de dessin : à droite des listes/boutons et à 10 pixels de marge de chaque côté
     QRect drawingArea(lstRect.right() + 20, 10,
@@ -137,7 +140,7 @@ void DisplayWindow::paintEvent(QPaintEvent *pEv)
 
         for (unsigned int i = 1 ; i < points.count() ; i++)
         {
-            int iPoint = atoi(points[i].toAscii()) ;
+            int iPoint = points[i].toInt() ;
 
             float destX, destY ;
             float angle ;

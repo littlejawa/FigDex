@@ -5,6 +5,7 @@
 #-------------------------------------------------
 
 QT       += core gui
+QT += widgets
 
 TARGET = FigDexGUI
 TEMPLATE = app
