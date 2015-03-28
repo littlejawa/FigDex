@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Calculateur de FIgures Dexiennes</string>
+   <string>Calculateur de Figures Dexiennes</string>
   </property>
   <widget class="QWidget" name="centralWidget">
    <widget class="QSpinBox" name="boxNb">
