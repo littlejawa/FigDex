@@ -2,6 +2,8 @@
 # -*- coding: utf-8 -*-
 
 import sys
+import math
+
 from PyQt4.QtGui import *
 from PyQt4.QtCore import *
 from figdexGUI import Ui_DisplayWindow
@@ -20,7 +22,70 @@ class MyMainWindow(QMainWindow):
         self.ui.lstResults.clear()
         lst = run(self.ui.boxNb.text())
         for i in range(0, len(lst)):
-          self.ui.lstResults.addItem(str(lst[i]))
+          strResult = " ".join(str(e) for e in lst[i])
+          self.ui.lstResults.addItem(strResult)
+          
+          
+    def paintEvent(self, event):
+        painter = QPainter(self)
+        lstRect = self.ui.lstResults.rect()
+        wndRect = self.rect()
+
+        nbPoints = self.ui.boxNb.text()
+
+        # définition de notre zone de dessin : à droite des listes/boutons et à 10 pixels de marge de chaque côté
+        drawingArea = QRect(lstRect.right() + 20, 10,
+                          wndRect.width() - lstRect.width() - lstRect.x() - 30,
+                          wndRect.height() - 20)
+
+        # on recadre la zone de dessin pour former un carré
+        if (drawingArea.width() > drawingArea.height()):
+            drawingArea.setWidth(drawingArea.height())
+        else:
+            drawingArea.setHeight(drawingArea.width())
+
+        print "Drawing circle from", drawingArea.x(), "/", drawingArea.y(), "to", drawingArea.right(), "/", drawingArea.bottom()
+        painter.drawEllipse(drawingArea)
+
+        selection = self.ui.lstResults.selectedItems()
+        if (selection == []):
+          print "Selection vide"
+        else:
+          x = drawingArea.left() + drawingArea.width()/2
+          y = drawingArea.top()
+          
+          points = selection[0].text().split(" ")
+
+          for i in range(1, len(points)):
+              # calcul de l'angle par rapport à la verticale
+              angle = ((360 / len(points)) * (int(points[i]) - 1))
+
+              # conversion par rapport à l'horizontale
+              angle = (angle - 90) * -1
+
+              # conversion en radians (pour les fonctions cos() et sin() qui ne gèrent pas les degrés
+              angle = angle * math.pi / 180
+
+              # on va calculer la position du point destination par rapport au centre du cercle
+              # avec x et y définit à partir de la position centrale
+              # sin(angle) = (y) / rayon => y = rayon * sin(angle)
+              # cos(angle) = (x) / rayon => x = rayon * cos(angle)
+              sinus = math.sin(angle)
+              cosinus = math.cos(angle)
+
+              destX = drawingArea.x() + drawingArea.width()/2 + (cosinus * (drawingArea.width()/2))
+              destY = drawingArea.y() + drawingArea.height()/2 - (sinus * drawingArea.height()/2)
+
+              print "Angle = ", angle, " cos = ", cosinus, " sin = ", sinus
+              print "Drawing line from ", x, "/", y, "to", destX, "/", destY
+              painter.drawLine(x, y, destX, destY)
+
+              x = destX
+              y = destY
+
+          print "Drawing (final) line from", x, "/", y,  "to", drawingArea.x() + drawingArea.width()/2, "/", drawingArea.y() + 10
+          painter.drawLine(x, y, drawingArea.x() + drawingArea.width()/2, drawingArea.y())
+          
 
 def test(liste, resultats):
 #  print "test", liste, resultats
@@ -95,6 +160,7 @@ if __name__ == "__main__":
     window = MyMainWindow()
     
     app.connect(window.ui.btnStart, SIGNAL("clicked()"), window, SLOT("btnStartClicked()"))
+    app.connect(window.ui.lstResults, SIGNAL("itemSelectionChanged()"), window, SLOT("repaint()"))
     
     window.show()
     
